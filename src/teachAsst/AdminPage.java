@@ -24,7 +24,7 @@ public class AdminPage extends JFrame {
 	dbConnection conn;
 
 	// error_flag keys:
-	// create user [0 : success, 1 : Duplicate User, 2 : too short]
+    // [0 : success, 1 : UsrDoesNotExist, 2: Duplicate User, 3 : too short]
 	int error_flag = -1;
 
 // ------------------------------------------------------------------------ //
@@ -36,6 +36,7 @@ public class AdminPage extends JFrame {
 	}
 
 	public AdminPage(dbConnection dbConn) {
+		String[] usrTypes = { "Student", "Teacher", "Admin" };
 		this.conn = dbConn;
 		this.setSize(900, 550);
 		Toolkit tk = Toolkit.getDefaultToolkit();
@@ -70,7 +71,6 @@ public class AdminPage extends JFrame {
 				current.setVisible(false);
 				JPanel addUsrPnl = new JPanel();
 
-				String[] usrTypes = { "Student", "Teacher", "Admin" };
 				JComboBox usrMenu = new JComboBox(usrTypes);
 				usrMenu.setSelectedIndex(0);
 
@@ -98,14 +98,14 @@ public class AdminPage extends JFrame {
 					addUsrPnl.add(success);
 				}
 
-				if (error_flag == 1) {
+				if (error_flag == 2) {
 					JLabel nameTaken = new JLabel("ERROR: \n" + "That name is already registered to another user \n"
 							+ "Please try a different Username");
 					addUsrPnl.add(nameTaken);
 
 				}
 
-				if (error_flag == 2) {
+				if (error_flag == 3) {
 					JLabel tooShort = new JLabel(
 							"ERROR: \n" + "Please ensure your name and password are a minimum of 3 chars");
 					addUsrPnl.add(tooShort);
@@ -129,7 +129,7 @@ public class AdminPage extends JFrame {
 						}
 
 						if (usrTextFld.getText().length() < 3 || pwTextFld.getText().length() < 3) {
-							error_flag = 2;
+							error_flag = 3;
 							return;
 						}
 
@@ -138,7 +138,7 @@ public class AdminPage extends JFrame {
 						if (success) {
 							error_flag = 0;
 						} else {
-							error_flag = 1;
+							error_flag = 2;
 							return;
 						}
 					}
@@ -155,20 +155,85 @@ public class AdminPage extends JFrame {
 				current.setVisible(false);
 
 				JPanel editUsrPnl = new JPanel();
-				JLabel editLbl = new JLabel("Enter a User ID to Edit");
+
+				JLabel oldIdLbl = new JLabel("Enter a User ID to Edit");
+				JTextField oldIdTxtBox = new JTextField("", 15);
+
+				JLabel newIdLbl = new JLabel("Enter a new User ID");
+				JTextField newIdTxtBox = new JTextField("", 15);
+
+				JLabel newPWLbl = new JLabel("Enter a new Password");
+				JTextField newPWTxtBox = new JTextField("", 15);
+				
+				JLabel menuLbl = new JLabel("Set user's privilege");
+
+				JComboBox usrMenu = new JComboBox(usrTypes);
+				usrMenu.setSelectedIndex(0);
+
 				JButton editSbmtBtn = new JButton("Submit");
-				JTextField idTxtBox = new JTextField("", 15);
-				editUsrPnl.add(editLbl);
-				editUsrPnl.add(idTxtBox);
+				editSbmtBtn.addActionListener(this);
+
+				editUsrPnl.add(oldIdLbl);
+				editUsrPnl.add(oldIdTxtBox);
+				editUsrPnl.add(newIdLbl);
+				editUsrPnl.add(newIdTxtBox);
+				editUsrPnl.add(newPWLbl);
+				editUsrPnl.add(newPWTxtBox);
+				editUsrPnl.add(menuLbl);
+				editUsrPnl.add(usrMenu);
 				editUsrPnl.add(editSbmtBtn);
+				
+				if (error_flag == 0) {
+					JLabel success = new JLabel("User successfully edited");
+					editUsrPnl.add(success);
+				}
+				
+				if (error_flag == 1) {
+					System.out.println("I'm here");
+					JLabel usrDNE = new JLabel("This user does not exist");
+					editUsrPnl.add(usrDNE);
+				}
+
+				if (error_flag == 2) {
+					JLabel nameTaken = new JLabel("ERROR: \n" + "That name is already registered to another user \n"
+							+ "Please try a different Username");
+					editUsrPnl.add(nameTaken);
+
+				}
+
+				if (error_flag == 3) {
+					JLabel tooShort = new JLabel(
+							"ERROR: \n" + "Please ensure your name and password are a minimum of 3 chars");
+					editUsrPnl.add(tooShort);
+				}
+				
+				current = editUsrPnl;
 				add(editUsrPnl);
 
 				editSbmtBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
-						System.out.println(idTxtBox.getText());
+						int privilege = 0;
+
+						if (usrMenu.getSelectedItem().equals("Student")) {
+							privilege = 3;
+						} else if (usrMenu.getSelectedItem().equals("Teacher")) {
+							privilege = 2;
+						} else {
+							privilege = 1;
+						}
+						
+						error_flag = dbConn.editUser(oldIdTxtBox.getText(), newIdTxtBox.getText(),
+								newPWTxtBox.getText(), privilege);
+						return;
 					}
 
 				}); // end submit edit button
+
+				usrMenu.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+					}
+				});
+
 			}
 		}); // end edit user action
 
