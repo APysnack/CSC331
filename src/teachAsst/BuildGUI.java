@@ -80,7 +80,7 @@ public class BuildGUI extends JFrame implements ActionListener {
 		// puts panel inside of window
 		this.add(main_window);
 
-		lgnLbl = new JLabel("User Login");
+		lgnLbl = new JLabel("Please Enter your Login Information");
 
 		
 		usrField = new JTextField("Enter Username", 15);
@@ -122,7 +122,7 @@ public class BuildGUI extends JFrame implements ActionListener {
 			}
 		});
 
-		lgnBtn = new JButton("User Login");
+		lgnBtn = new JButton("Login");
 		// Action listener required, calls self
 		lgnBtn.addActionListener(this);
 
@@ -140,7 +140,7 @@ public class BuildGUI extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent event) {
 		// text must be same as the string in the button description
-		if (event.getActionCommand().equals("User Login")) {
+		if (event.getActionCommand().equals("Login")) {
 			String userName = usrField.getText();
 			String password = pwField.getText();
 			

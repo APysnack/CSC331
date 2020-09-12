@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 public class dbConnection {
 	String name;
@@ -41,18 +42,24 @@ public class dbConnection {
 		
 		} // end function
 	
-	public void createUser(String userName, String userPW, int Privilege) {
+	public boolean createUser(String userName, String userPW, int Privilege) {
 		String new_query = "Insert into users values ('" + userName + "', '" + userPW + "', " + Privilege + ");";
 		
 		try
 		{
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(new_query);
-		}
-		catch(SQLException e) {
-			System.out.println(e);
+			return true;
 		}
 		
+		catch(SQLIntegrityConstraintViolationException e) {
+			return false;
+		}
+		
+		catch(SQLException e) {
+			System.out.println(e);
+			return false;
+		}
 	}
 
 } // end class
