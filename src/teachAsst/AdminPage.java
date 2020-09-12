@@ -24,7 +24,7 @@ public class AdminPage extends JFrame {
 	dbConnection conn;
 
 	// error_flag keys:
-    // [0 : success, 1 : UsrDoesNotExist, 2: Duplicate User, 3 : too short]
+	// [0 : success, 1 : UsrDoesNotExist, 2: Duplicate User, 3 : too short]
 	int error_flag = -1;
 
 // ------------------------------------------------------------------------ //
@@ -48,22 +48,22 @@ public class AdminPage extends JFrame {
 		this.setTitle("Admin View");
 		JPanel main_window = new JPanel();
 
-		JLabel errorLbl = new JLabel("Admin Homepage");
+		JLabel adminLbl = new JLabel("Admin Homepage");
 		JButton addUsrBtn = new JButton("Add User");
 		JButton editUsrBtn = new JButton("Edit User");
 		JButton delUsrBtn = new JButton("Delete User");
 
+		main_window.add(adminLbl);
 		main_window.add(addUsrBtn);
 		main_window.add(editUsrBtn);
 		main_window.add(delUsrBtn);
-		main_window.add(errorLbl);
 
 		this.add(main_window);
 		this.setVisible(true);
 		this.current = main_window;
 
 // ------------------------------------------------------------------------ //
-//                         Create new User
+//                        Create new User Page
 // ------------------------------------------------------------------------ //
 
 		addUsrBtn.addActionListener(new ActionListener() {
@@ -107,10 +107,13 @@ public class AdminPage extends JFrame {
 
 				if (error_flag == 3) {
 					JLabel tooShort = new JLabel(
-							"ERROR: \n" + "Please ensure your name and password are a minimum of 3 chars");
+							"ERROR: \n" + "Please ensure your name and password are a minimum of 5 characters");
 					addUsrPnl.add(tooShort);
 				}
 
+//------------------------------------------------------------------------ //
+// 						Create User Button Response
+//------------------------------------------------------------------------ //
 				usrMenu.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 					}
@@ -128,7 +131,7 @@ public class AdminPage extends JFrame {
 							privilege = 1;
 						}
 
-						if (usrTextFld.getText().length() < 3 || pwTextFld.getText().length() < 3) {
+						if (usrTextFld.getText().length() < 5 || pwTextFld.getText().length() < 5) {
 							error_flag = 3;
 							return;
 						}
@@ -144,7 +147,7 @@ public class AdminPage extends JFrame {
 					}
 				});
 			}
-		}); // end create user action
+		}); // create user page end
 
 // ------------------------------------------------------------------------ //
 //                                 Edit User
@@ -164,7 +167,7 @@ public class AdminPage extends JFrame {
 
 				JLabel newPWLbl = new JLabel("Enter a new Password");
 				JTextField newPWTxtBox = new JTextField("", 15);
-				
+
 				JLabel menuLbl = new JLabel("Set user's privilege");
 
 				JComboBox usrMenu = new JComboBox(usrTypes);
@@ -182,14 +185,13 @@ public class AdminPage extends JFrame {
 				editUsrPnl.add(menuLbl);
 				editUsrPnl.add(usrMenu);
 				editUsrPnl.add(editSbmtBtn);
-				
+
 				if (error_flag == 0) {
 					JLabel success = new JLabel("User successfully edited");
 					editUsrPnl.add(success);
 				}
-				
+
 				if (error_flag == 1) {
-					System.out.println("I'm here");
 					JLabel usrDNE = new JLabel("This user does not exist");
 					editUsrPnl.add(usrDNE);
 				}
@@ -203,12 +205,16 @@ public class AdminPage extends JFrame {
 
 				if (error_flag == 3) {
 					JLabel tooShort = new JLabel(
-							"ERROR: \n" + "Please ensure your name and password are a minimum of 3 chars");
+							"ERROR: \n" + "Please ensure your name and password are a minimum of 5 chars");
 					editUsrPnl.add(tooShort);
 				}
-				
+
 				current = editUsrPnl;
 				add(editUsrPnl);
+
+//------------------------------------------------------------------------ //
+//					Edit User Button Response
+//------------------------------------------------------------------------ //
 
 				editSbmtBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
@@ -221,7 +227,7 @@ public class AdminPage extends JFrame {
 						} else {
 							privilege = 1;
 						}
-						
+
 						error_flag = dbConn.editUser(oldIdTxtBox.getText(), newIdTxtBox.getText(),
 								newPWTxtBox.getText(), privilege);
 						return;
@@ -231,11 +237,54 @@ public class AdminPage extends JFrame {
 
 				usrMenu.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
+						current.setVisible(false);
 					}
 				});
 
 			}
-		}); // end edit user action
+		}); // edit user page end
+
+// ------------------------------------------------------------------------ //
+//     						 Delete User Page
+//------------------------------------------------------------------------ //
+		delUsrBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				JPanel delUsrPnl = new JPanel();
+				JLabel delUsrHdr = new JLabel("Warning: Deleting a user cannot be undone");
+				JLabel delUsrId = new JLabel("Enter User ID");
+				JTextField usrIdTxtBox = new JTextField("", 15);
+				JButton delUsrBtn = new JButton("Delete User");
+				delUsrBtn.addActionListener(this);
+
+				delUsrPnl.add(delUsrHdr);
+				delUsrPnl.add(delUsrId);
+				delUsrPnl.add(usrIdTxtBox);
+				delUsrPnl.add(delUsrBtn);
+				
+				if (error_flag == 0) {
+					JLabel success = new JLabel("User successfully removed");
+					delUsrPnl.add(success);
+				}
+
+				if (error_flag == 1) {
+					JLabel usrDNE = new JLabel("This user does not exist");
+					delUsrPnl.add(usrDNE);
+				}
+				
+				current = delUsrPnl;
+				add(delUsrPnl);
+
+				delUsrBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						error_flag = dbConn.removeUser(usrIdTxtBox.getText());
+						System.out.println(error_flag);
+					}
+				});
+
+			}
+		}); // delete user page end
 
 	} // end admin page function
 

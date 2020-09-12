@@ -84,6 +84,26 @@ public class dbConnection {
 			System.out.println(e);
 			return 3;
 		}
-	}
+	} // end edit user function
+
+	public int removeUser(String userName) {
+		String new_query = "Delete from users where ID='" + userName + "';";
+		try {
+			Statement stmt = conn.createStatement();
+			int rowsAffected = stmt.executeUpdate(new_query);
+			if (rowsAffected == 0) {
+				// if no rows affected, returns 1 for error flag
+				return 1;
+			} else {
+				// otherwise, command was successful
+				return 0;
+			}
+		}
+
+		catch (SQLException e) {
+			System.out.println(e);
+			return 3;
+		}
+	} // end remove user function
 
 } // end class
