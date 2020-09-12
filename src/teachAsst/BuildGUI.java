@@ -148,11 +148,9 @@ public class BuildGUI extends JFrame implements ActionListener {
 				dbConnection dbConn = new dbConnection();
 				int privilege = dbConn.connectUser(userName, password);
 				
-				System.out.println(privilege);
-				
 				if(privilege == 1) {
 					this.dispose();
-					AdminPage admn = new AdminPage();
+					AdminPage admn = new AdminPage(dbConn);
 				}
 				
 				else if(privilege == 2){

@@ -40,5 +40,19 @@ public class dbConnection {
 		return privilege;
 		
 		} // end function
+	
+	public void createUser(String userName, String userPW, int Privilege) {
+		String new_query = "Insert into users values ('" + userName + "', '" + userPW + "', " + Privilege + ");";
+		
+		try
+		{
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate(new_query);
+		}
+		catch(SQLException e) {
+			System.out.println(e);
+		}
+		
+	}
 
 } // end class
