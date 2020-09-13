@@ -32,7 +32,6 @@ public class AdminPage extends JFrame {
 // ------------------------------------------------------------------------ //
 
 	public AdminPage() {
-
 	}
 
 	public AdminPage(dbConnection dbConn) {
@@ -333,7 +332,7 @@ public class AdminPage extends JFrame {
 		viewUsrBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				current.setVisible(false);
-				JTable table = dbConn.getJTable();
+				JTable table = dbConn.getJTable("Users");
 
 				JPanel viewTblPnl = new JPanel(new GridLayout(3, 1, 2, 2));
 

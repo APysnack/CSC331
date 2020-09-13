@@ -212,11 +212,26 @@ public class TeacherPage extends JFrame {
 		JPanel clsAsgnmtPnl = new JPanel();
 		JButton newAsgnmtBtn = new JButton("Create New Assignment");
 		JButton delAsgnmtBtn = new JButton("Delete Assignment");
+		JButton vwAsgnmtBtn = new JButton("View Assignments");
 		JButton backBtn = new JButton("Back");
 
 		clsAsgnmtPnl.add(newAsgnmtBtn);
 		clsAsgnmtPnl.add(delAsgnmtBtn);
+		clsAsgnmtPnl.add(vwAsgnmtBtn);
 		clsAsgnmtPnl.add(backBtn);
+		
+		vwAsgnmtBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				temp = last;
+				last = current;
+				current = vwAsgnmtPnl();
+
+				add(current);
+				current.setVisible(true);
+			}
+		});
 
 		newAsgnmtBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -253,6 +268,38 @@ public class TeacherPage extends JFrame {
 		});
 
 		return clsAsgnmtPnl;
+	}
+	
+	public JPanel vwAsgnmtPnl() {
+		
+		current.setVisible(false);
+		
+		JPanel vwAsgnmtPnl = new JPanel(new GridLayout(3, 1, 2, 2));
+		
+		JButton backBtn = new JButton("Back");
+	
+		JTable table = conn.getJTable("assignments");
+		JScrollPane scrollPane = new JScrollPane(table);
+		
+		JPanel pad = new JPanel();
+		pad.setBorder(new EmptyBorder(10, 10, 10, 10));
+	
+		vwAsgnmtPnl.add(scrollPane);
+		vwAsgnmtPnl.add(pad);
+		vwAsgnmtPnl.add(backBtn);
+		
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				current = last;
+				last = temp;
+
+				current.setVisible(true);
+			}
+		});
+		
+		return vwAsgnmtPnl;
 	}
 	
 	public JPanel newAsgnmtPnl() {

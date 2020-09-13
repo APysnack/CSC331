@@ -115,9 +115,9 @@ public class dbConnection {
 		}
 	} // end remove user function
 
-	public JTable getJTable() {
+	public JTable getJTable(String tbl) {
 
-		String new_query = "Select * from Users;";
+		String new_query = "Select * from " + tbl + ";";
 
 		try {
 
