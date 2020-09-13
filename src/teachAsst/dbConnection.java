@@ -5,6 +5,12 @@ import java.sql.Connection;
 import java.sql.ResultSetMetaData;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Vector;
+
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -105,5 +111,64 @@ public class dbConnection {
 			return 3;
 		}
 	} // end remove user function
+
+	public JTable getJTable() {
+		
+		String new_query = "Select * from Users;";
+		
+		try {
+			
+			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+			centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+			
+			Statement stmt = conn.createStatement();
+			stmt.executeQuery(new_query);
+			ResultSet result = stmt.getResultSet();
+			ResultSetMetaData metadata = result.getMetaData();
+			int colCount = metadata.getColumnCount();
+
+			Vector columnNames = new Vector();
+			Vector data = new Vector();
+
+			for (int i = 1; i <= colCount; i++) {
+				columnNames.addElement(metadata.getColumnName(i));
+
+			}
+
+			while (result.next()) {
+				Vector row = new Vector();
+				for (int i = 1; i <= colCount; i++) {
+					row.addElement(result.getObject(i));
+				}
+
+				data.addElement(row);
+			}
+
+			JTable table = new JTable(data, columnNames) {
+				public Class getColumnClass(int column) {
+					for (int row = 0; row < getRowCount(); row++) {
+						Object o = getValueAt(row, column);
+						if (o != null) {
+							return o.getClass();
+						}
+					}
+					return Object.class;
+				}
+			};
+			
+			for(int i = 0; i < colCount; i++) {
+				table.getColumnModel().getColumn(i).setCellRenderer( centerRenderer );
+			}
+			
+
+			return table;
+
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+
+		JTable table = new JTable();
+		return table;
+	}
 
 } // end class

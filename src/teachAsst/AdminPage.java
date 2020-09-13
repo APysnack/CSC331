@@ -52,11 +52,13 @@ public class AdminPage extends JFrame {
 		JButton addUsrBtn = new JButton("Add User");
 		JButton editUsrBtn = new JButton("Edit User");
 		JButton delUsrBtn = new JButton("Delete User");
+		JButton viewUsrBtn = new JButton("View Users");
 
 		main_window.add(adminLbl);
 		main_window.add(addUsrBtn);
 		main_window.add(editUsrBtn);
 		main_window.add(delUsrBtn);
+		main_window.add(viewUsrBtn);
 
 		this.add(main_window);
 		this.setVisible(true);
@@ -262,7 +264,7 @@ public class AdminPage extends JFrame {
 				delUsrPnl.add(delUsrId);
 				delUsrPnl.add(usrIdTxtBox);
 				delUsrPnl.add(delUsrBtn);
-				
+
 				if (error_flag == 0) {
 					JLabel success = new JLabel("User successfully removed");
 					delUsrPnl.add(success);
@@ -272,7 +274,7 @@ public class AdminPage extends JFrame {
 					JLabel usrDNE = new JLabel("This user does not exist");
 					delUsrPnl.add(usrDNE);
 				}
-				
+
 				current = delUsrPnl;
 				add(delUsrPnl);
 
@@ -285,6 +287,35 @@ public class AdminPage extends JFrame {
 
 			}
 		}); // delete user page end
+
+		viewUsrBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+				JTable table = dbConn.getJTable();
+				
+				JPanel viewTblPnl = new JPanel(new GridLayout(3, 1, 2, 2));
+				
+				JPanel pad = new JPanel();
+				pad.setBorder(new EmptyBorder(10, 10, 10, 10));
+				
+				JButton backBtn = new JButton("Back");
+				backBtn.addActionListener(this);
+				JScrollPane scrollPane = new JScrollPane(table);
+				viewTblPnl.add(scrollPane);
+				viewTblPnl.add(pad);
+				viewTblPnl.add(backBtn);
+				add(viewTblPnl);
+
+				backBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						dispose();
+						AdminPage admn = new AdminPage(dbConn);
+					}
+
+				});
+
+			}
+		});
 
 	} // end admin page function
 
