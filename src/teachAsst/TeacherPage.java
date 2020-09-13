@@ -24,6 +24,7 @@ public class TeacherPage extends JFrame {
 	JPanel current;
 	JPanel temp;
 	dbConnection conn;
+	int error_flag = -1;
 
 //---------------------------------------------------------------------//
 // 							Teacher Home Page
@@ -336,6 +337,26 @@ public class TeacherPage extends JFrame {
 		newAsgnmtPnl.add(crtAsgnmtBtn);
 		newAsgnmtPnl.add(backBtn);
 		
+		if (error_flag == 0) {
+			JLabel success = new JLabel("Assignment added successfully");
+			newAsgnmtPnl.add(success);
+			error_flag = -1;
+		}
+		
+		else if (error_flag == 2) {
+			JLabel duplicate = new JLabel("An assignment with this ID exists");
+			newAsgnmtPnl.add(duplicate);
+			error_flag = -1;
+		}
+		
+		else if (error_flag == 3) {
+			JLabel error = new JLabel("There was an unknown error with your request");
+			newAsgnmtPnl.add(error);
+			error_flag = -1;
+		}
+		
+		add(newAsgnmtPnl);
+		
 		crtAsgnmtBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				int id = Integer.parseInt(asgnmtIDFld.getText());
@@ -344,7 +365,10 @@ public class TeacherPage extends JFrame {
 				int points = Integer.parseInt(asgnmtPtFld.getText());
 				String date = asgnmtDateFld.getText();
 				
-				conn.addAssignment(id, title, details, points, date);
+				error_flag = conn.addAssignment(id, title, details, points, date);
+				current.setVisible(false);
+				current = newAsgnmtPnl();
+				current.setVisible(true);
 			}
 		});
 		
@@ -380,11 +404,32 @@ public class TeacherPage extends JFrame {
 		delAsgnmtPnl.add(delAsgnmtBtn);
 		delAsgnmtPnl.add(backBtn);
 		
+		if(error_flag == 0) {
+			JLabel success = new JLabel("Assignment Deleted Successfully");
+			delAsgnmtPnl.add(success);
+			error_flag = -1;
+		}
+		else if(error_flag == 1) {
+			JLabel duplicate = new JLabel("Assignment ID Not found");
+			delAsgnmtPnl.add(duplicate);
+			error_flag = -1;
+		}
+		
+		else if (error_flag == 3) {
+			JLabel error = new JLabel("There was an unknown error with your request");
+			delAsgnmtPnl.add(error);
+			error_flag = -1;
+		}
+		
 		add(delAsgnmtPnl);
 		
 		delAsgnmtBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				conn.removeRow("assignments", delAsgnmtFld.getText());
+				error_flag = conn.removeRow("assignments", delAsgnmtFld.getText());
+				current.setVisible(false);
+				current = delAsgnmtPnl();
+				current.setVisible(true);
+				
 			}
 		});
 		
