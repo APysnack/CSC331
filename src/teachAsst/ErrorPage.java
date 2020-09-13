@@ -3,18 +3,11 @@ package teachAsst;
 import java.awt.BorderLayout;
 //allows you to store height and width, nothing else
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.*;
-import java.sql.SQLException;
 //allows you to ask different questions of the OS
 import java.awt.Toolkit;
 
 import javax.swing.*;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.text.NumberFormat;
-import javax.swing.border.*;
 
 public class ErrorPage extends JFrame implements ActionListener {
 	

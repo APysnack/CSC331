@@ -1,7 +1,6 @@
 package teachAsst;
 
 import java.sql.Connection;
-import java.util.Date;
 import java.sql.ResultSetMetaData;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -18,7 +17,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 // error_flag keys:
-// [0 : success, 1 : UsrDoesNotExist, 2: Duplicate User, 3 : too short]
+// [0 : success, 1 : UsrDoesNotExist, 2: Duplicate User, 3 : too short, 4: function specific]
 
 public class dbConnection {
 	String name;

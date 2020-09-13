@@ -1,20 +1,14 @@
 package teachAsst;
 
-import java.awt.BorderLayout;
-import java.util.ArrayList;
 //allows you to store height and width, nothing else
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.*;
-import java.sql.Connection;
 //allows you to ask different questions of the OS
 import java.awt.Toolkit;
 
 import javax.swing.*;
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.text.NumberFormat;
 import javax.swing.border.*;
 
 public class AdminPage extends JFrame {

@@ -27,7 +27,7 @@ public class TeacherPage extends JFrame {
 	int error_flag = -1;
 
 //---------------------------------------------------------------------//
-// 							Teacher Home Page
+// 						Tier 1: Teacher Home Page
 //---------------------------------------------------------------------//
 
 	public TeacherPage(dbConnection dbConn) {
@@ -43,10 +43,10 @@ public class TeacherPage extends JFrame {
 		JPanel main_window = new JPanel();
 		JLabel hmpgLbl = new JLabel("Teacher Homepage");
 
-		JButton clsAtndBtn = new JButton("Class Attendance");
-		JButton clsAsgnmtBtn = new JButton("Class Assignments");
-		JButton clsGrdBtn = new JButton("Class Grades");
-		JButton clsBhvrBtn = new JButton("Log Behavior");
+		JButton clsAtndBtn = new JButton("Attendance");
+		JButton clsAsgnmtBtn = new JButton("Assignments");
+		JButton clsGrdBtn = new JButton("Grades");
+		JButton clsBhvrBtn = new JButton("Behavior");
 		JButton lgOutBtn = new JButton("Log Out");
 
 		main_window.add(hmpgLbl);
@@ -62,7 +62,7 @@ public class TeacherPage extends JFrame {
 		current = main_window;
 
 //---------------------------------------------------------------------//
-//					Home Page Button Functionality
+//					Tier 1.5: Home Page Button Functionality
 //---------------------------------------------------------------------//
 
 		clsAtndBtn.addActionListener(new ActionListener() {
@@ -94,13 +94,27 @@ public class TeacherPage extends JFrame {
 
 		clsGrdBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				System.out.println("Grades");
+				current.setVisible(false);
+
+				temp = last;
+				last = current;
+				current = clsGrdPnl();
+
+				current.setVisible(true);
+				add(current);
 			}
 		});
 
 		clsBhvrBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				System.out.println("Behavior");
+				current.setVisible(false);
+
+				temp = last;
+				last = current;
+				current = clsBhvrPnl();
+
+				current.setVisible(true);
+				add(current);
 			}
 		});
 
@@ -113,22 +127,33 @@ public class TeacherPage extends JFrame {
 	} // end teacher page
 
 //---------------------------------------------------------------------//
-//						Class Attendance Page
+//						 Tier 2: Attendance Home Page
 //---------------------------------------------------------------------//
 
 	public JPanel clsAtndPnl() {
 		JPanel clsAtndPnl = new JPanel();
-		JButton vwAtndBtn = new JButton("view attendance");
-		JButton rcrdAtndBtn = new JButton("record attendance");
+		JButton rcrdAtndBtn = new JButton("Record attendance");
+		JButton vwAtndBtn = new JButton("View attendance");
+		JButton asgnStgBtn = new JButton("Assign Seating Charts");
 		JButton backBtn = new JButton("Back");
 
+		clsAtndPnl.add(asgnStgBtn);
 		clsAtndPnl.add(rcrdAtndBtn);
 		clsAtndPnl.add(vwAtndBtn);
 		clsAtndPnl.add(backBtn);
 
-//---------------------------------------------------------------------//
-//				Class Attendance Button Functionality
-//---------------------------------------------------------------------//
+		asgnStgBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				temp = last;
+				last = current;
+				current = asgnStgPnl();
+
+				add(current);
+				current.setVisible(true);
+			}
+		});
 
 		rcrdAtndBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -170,6 +195,36 @@ public class TeacherPage extends JFrame {
 		return clsAtndPnl;
 	} // end class Attendance Panel
 
+//---------------------------------------------------------------------//
+//					Tier 3: Assign Seating Charts
+//---------------------------------------------------------------------//
+
+	public JPanel asgnStgPnl() {
+		JPanel asgnStgPnl = new JPanel();
+		current.setVisible(false);
+
+		JButton backBtn = new JButton("Back");
+
+		asgnStgPnl.add(backBtn);
+
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				current = last;
+				last = temp;
+
+				current.setVisible(true);
+			}
+		});
+
+		return asgnStgPnl;
+	}
+
+//---------------------------------------------------------------------//
+//					Tier 3: Record Attendance Page
+//---------------------------------------------------------------------//
+
 	public JPanel rcrdAtndPnl() {
 		JPanel rcrdAtndPnl = new JPanel();
 		JButton backBtn = new JButton("Back");
@@ -189,6 +244,10 @@ public class TeacherPage extends JFrame {
 
 	}
 
+//---------------------------------------------------------------------//
+//					 	Tier 3: View Attendance Page
+//---------------------------------------------------------------------//
+
 	public JPanel vwAtndPnl() {
 		JPanel vwAtndPnl = new JPanel();
 		JButton backBtn = new JButton("Back");
@@ -207,6 +266,10 @@ public class TeacherPage extends JFrame {
 		return vwAtndPnl;
 
 	}
+
+//---------------------------------------------------------------------//
+//					   Tier 2: Assignments Home Page
+//---------------------------------------------------------------------//
 
 	public JPanel clsAsgnmtPnl() {
 		JPanel clsAsgnmtPnl = new JPanel();
@@ -270,6 +333,10 @@ public class TeacherPage extends JFrame {
 		return clsAsgnmtPnl;
 	}
 
+//---------------------------------------------------------------------//
+//						Tier 3: View Assignments Page
+//---------------------------------------------------------------------//
+
 	public JPanel vwAsgnmtPnl() {
 
 		current.setVisible(false);
@@ -301,6 +368,10 @@ public class TeacherPage extends JFrame {
 
 		return vwAsgnmtPnl;
 	}
+
+//---------------------------------------------------------------------//
+//						Tier 3: Create Assignment Page
+//---------------------------------------------------------------------//
 
 	public JPanel newAsgnmtPnl() {
 		JPanel newAsgnmtPnl = new JPanel();
@@ -394,7 +465,7 @@ public class TeacherPage extends JFrame {
 	}
 
 //---------------------------------------------------------------------//
-//						Delete Assignment Page
+//						Tier 3: Delete Assignment Page
 //---------------------------------------------------------------------//
 
 	public JPanel delAsgnmtPnl() {
@@ -451,6 +522,214 @@ public class TeacherPage extends JFrame {
 		});
 
 		return delAsgnmtPnl;
+	}
+
+//---------------------------------------------------------------------//
+//						Tier 2: Grades Home Page
+//---------------------------------------------------------------------//
+
+	public JPanel clsGrdPnl() {
+		JPanel clsGrdPnl = new JPanel();
+		JButton rcrdGrdBtn = new JButton("Record Grades");
+		JButton vwGrdBtn = new JButton("View Grades");
+		JButton backBtn = new JButton("Back");
+
+		clsGrdPnl.add(rcrdGrdBtn);
+		clsGrdPnl.add(vwGrdBtn);
+		clsGrdPnl.add(backBtn);
+		
+		rcrdGrdBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				temp = last;
+				last = current;
+				current = rcrdGrdPnl();
+
+				add(current);
+				current.setVisible(true);
+			}
+		});
+
+		vwGrdBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				temp = last;
+				last = current;
+				current = vwGrdPnl();
+
+				add(current);
+				current.setVisible(true);
+			}
+		});
+
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				current = last;
+				last = temp;
+
+				current.setVisible(true);
+			}
+		});
+
+		return clsGrdPnl;
+	}
+
+//---------------------------------------------------------------------//
+//					Tier 3: Record Grades Page
+//---------------------------------------------------------------------//
+
+	public JPanel rcrdGrdPnl() {
+		current.setVisible(false);
+		JPanel rcrdGrdPnl = new JPanel();
+
+		JButton backBtn = new JButton("Back");
+		
+		rcrdGrdPnl.add(backBtn);
+
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				current = last;
+				last = temp;
+
+				current.setVisible(true);
+			}
+		});
+
+		return rcrdGrdPnl;
+	}
+//---------------------------------------------------------------------//
+//	Tier 3: View Behavior Page
+//---------------------------------------------------------------------//
+
+	public JPanel vwGrdPnl() {
+		JPanel vwGrdPnl = new JPanel();
+		current.setVisible(false);
+
+		JButton backBtn = new JButton("Back");
+
+		vwGrdPnl.add(backBtn);
+
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				current = last;
+				last = temp;
+
+				current.setVisible(true);
+			}
+		});
+
+		return vwGrdPnl;
+	}
+
+//---------------------------------------------------------------------//
+//						Tier 2: Behavior Home Page
+//---------------------------------------------------------------------//
+
+	public JPanel clsBhvrPnl() {
+		JPanel clsBhvrPnl = new JPanel();
+		JButton rcrdBhvrBtn = new JButton("Record Behavior");
+		JButton vwBhvrBtn = new JButton("View Behavior");
+		JButton backBtn = new JButton("Back");
+
+		clsBhvrPnl.add(rcrdBhvrBtn);
+		clsBhvrPnl.add(vwBhvrBtn);
+		clsBhvrPnl.add(backBtn);
+
+		rcrdBhvrBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				temp = last;
+				last = current;
+				current = rcrdAtndPnl();
+
+				add(current);
+				current.setVisible(true);
+			}
+		});
+
+		vwBhvrBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				temp = last;
+				last = current;
+				current = vwBhvrPnl();
+
+				add(current);
+				current.setVisible(true);
+			}
+		});
+
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				current = last;
+				last = temp;
+
+				current.setVisible(true);
+			}
+		});
+
+		return clsBhvrPnl;
+	}
+
+//---------------------------------------------------------------------//
+//						Tier 3: Record Behavior Page
+//---------------------------------------------------------------------//
+
+	public JPanel rcrdBhvrPnl() {
+		JPanel rcrdBhvrPnl = new JPanel();
+		current.setVisible(false);
+
+		JButton backBtn = new JButton("Back");
+
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				current = last;
+				last = temp;
+
+				current.setVisible(true);
+			}
+		});
+
+		return rcrdBhvrPnl;
+	}
+//---------------------------------------------------------------------//
+//						Tier 3: View Behavior Page
+//---------------------------------------------------------------------//
+
+	public JPanel vwBhvrPnl() {
+		JPanel vwBhvrPnl = new JPanel();
+		current.setVisible(false);
+
+		JButton backBtn = new JButton("Back");
+
+		vwBhvrPnl.add(backBtn);
+
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				current.setVisible(false);
+
+				current = last;
+				last = temp;
+
+				current.setVisible(true);
+			}
+		});
+
+		return vwBhvrPnl;
 	}
 
 }

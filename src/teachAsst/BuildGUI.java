@@ -10,10 +10,6 @@ import java.sql.SQLException;
 import java.awt.Toolkit;
 
 import javax.swing.*;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.text.NumberFormat;
 import javax.swing.border.*;
 // note that "Frames" are just windows
 
