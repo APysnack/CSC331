@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import com.mysql.cj.util.StringUtils;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -96,7 +98,7 @@ public class dbConnection {
 
 	public int removeRow(String table, String id) {
 		String new_query = "Delete from " + table + " where ID='" + id + "';";
-		
+
 		try {
 			Statement stmt = conn.createStatement();
 			int rowsAffected = stmt.executeUpdate(new_query);
@@ -173,16 +175,20 @@ public class dbConnection {
 		return table;
 	}
 
-	public int addAssignment(int id, String title, String details, int points, String dueDate) {
+	public int addAssignment(String id, String title, String details, String points, String dueDate) {
 		String new_query = "insert into assignments values (" + id + ", '" + title + "', '" + details + "', " + points
 				+ ", '" + dueDate + "');";
-		
+
+		if (!StringUtils.isStrictlyNumeric(id) || !StringUtils.isStrictlyNumeric(points) || dueDate.length() < 10) {
+			return 4;
+		}
+
 		try {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(new_query);
 			return 0;
 		}
-		
+
 		catch (SQLIntegrityConstraintViolationException e) {
 			return 2;
 		}

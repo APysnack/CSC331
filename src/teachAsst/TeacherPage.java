@@ -64,7 +64,7 @@ public class TeacherPage extends JFrame {
 //---------------------------------------------------------------------//
 //					Home Page Button Functionality
 //---------------------------------------------------------------------//
-		
+
 		clsAtndBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				// teacher home page turned invisible
@@ -112,11 +112,10 @@ public class TeacherPage extends JFrame {
 		}); // end log out button function
 	} // end teacher page
 
-
 //---------------------------------------------------------------------//
 //						Class Attendance Page
 //---------------------------------------------------------------------//
-	
+
 	public JPanel clsAtndPnl() {
 		JPanel clsAtndPnl = new JPanel();
 		JButton vwAtndBtn = new JButton("view attendance");
@@ -130,7 +129,7 @@ public class TeacherPage extends JFrame {
 //---------------------------------------------------------------------//
 //				Class Attendance Button Functionality
 //---------------------------------------------------------------------//
-		
+
 		rcrdAtndBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				current.setVisible(false);
@@ -220,7 +219,7 @@ public class TeacherPage extends JFrame {
 		clsAsgnmtPnl.add(delAsgnmtBtn);
 		clsAsgnmtPnl.add(vwAsgnmtBtn);
 		clsAsgnmtPnl.add(backBtn);
-		
+
 		vwAsgnmtBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				current.setVisible(false);
@@ -246,11 +245,11 @@ public class TeacherPage extends JFrame {
 				current.setVisible(true);
 			}
 		});
-		
+
 		delAsgnmtBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				current.setVisible(false);
-				
+
 				temp = last;
 				last = current;
 				current = delAsgnmtPnl();
@@ -270,25 +269,25 @@ public class TeacherPage extends JFrame {
 
 		return clsAsgnmtPnl;
 	}
-	
+
 	public JPanel vwAsgnmtPnl() {
-		
+
 		current.setVisible(false);
-		
+
 		JPanel vwAsgnmtPnl = new JPanel(new GridLayout(3, 1, 2, 2));
-		
+
 		JButton backBtn = new JButton("Back");
-	
+
 		JTable table = conn.getJTable("assignments");
 		JScrollPane scrollPane = new JScrollPane(table);
-		
+
 		JPanel pad = new JPanel();
 		pad.setBorder(new EmptyBorder(10, 10, 10, 10));
-	
+
 		vwAsgnmtPnl.add(scrollPane);
 		vwAsgnmtPnl.add(pad);
 		vwAsgnmtPnl.add(backBtn);
-		
+
 		backBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				current.setVisible(false);
@@ -299,14 +298,14 @@ public class TeacherPage extends JFrame {
 				current.setVisible(true);
 			}
 		});
-		
+
 		return vwAsgnmtPnl;
 	}
-	
+
 	public JPanel newAsgnmtPnl() {
 		JPanel newAsgnmtPnl = new JPanel();
 		current.setVisible(false);
-		
+
 		JLabel asgnmtIDLbl = new JLabel("Assignment ID");
 		JTextField asgnmtIDFld = new JTextField("", 10);
 		JButton crtAsgnmtBtn = new JButton("Create new assignment");
@@ -317,13 +316,13 @@ public class TeacherPage extends JFrame {
 		JTextField asgnmtPtFld = new JTextField("", 5);
 		JLabel asgnmtDateLbl = new JLabel("Due Date (YYYY-MM-DD)");
 		JTextField asgnmtDateFld = new JTextField("", 10);
-		
+
 		JTextArea asgnmtDtlArea = new JTextArea(5, 20);
 		asgnmtDtlArea.setEditable(true);
-		JScrollPane scrollPane = new JScrollPane(asgnmtDtlArea); 
-		
+		JScrollPane scrollPane = new JScrollPane(asgnmtDtlArea);
+
 		JButton backBtn = new JButton("Back");
-		
+
 		newAsgnmtPnl.add(asgnmtIDLbl);
 		newAsgnmtPnl.add(asgnmtIDFld);
 		newAsgnmtPnl.add(asgnmtTtlLbl);
@@ -336,42 +335,50 @@ public class TeacherPage extends JFrame {
 		newAsgnmtPnl.add(asgnmtDateFld);
 		newAsgnmtPnl.add(crtAsgnmtBtn);
 		newAsgnmtPnl.add(backBtn);
-		
+
 		if (error_flag == 0) {
 			JLabel success = new JLabel("Assignment added successfully");
 			newAsgnmtPnl.add(success);
 			error_flag = -1;
 		}
-		
+
 		else if (error_flag == 2) {
 			JLabel duplicate = new JLabel("An assignment with this ID exists");
 			newAsgnmtPnl.add(duplicate);
 			error_flag = -1;
 		}
-		
+
 		else if (error_flag == 3) {
 			JLabel error = new JLabel("There was an unknown error with your request");
 			newAsgnmtPnl.add(error);
 			error_flag = -1;
 		}
-		
+
+		else if (error_flag == 4) {
+			JLabel frmt_err = new JLabel("An error was detected in the format of your entry.");
+			JLabel frmt_err2 = new JLabel("Please double check your date format. Point/ID values must also be numeric");
+			newAsgnmtPnl.add(frmt_err);
+			newAsgnmtPnl.add(frmt_err2);
+			error_flag = -1;
+		}
+
 		add(newAsgnmtPnl);
-		
+
 		crtAsgnmtBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				int id = Integer.parseInt(asgnmtIDFld.getText());
+				String id = asgnmtIDFld.getText();
 				String title = asgnmtTtlFld.getText();
 				String details = asgnmtDtlArea.getText();
-				int points = Integer.parseInt(asgnmtPtFld.getText());
+				String points = asgnmtPtFld.getText();
 				String date = asgnmtDateFld.getText();
-				
+
 				error_flag = conn.addAssignment(id, title, details, points, date);
 				current.setVisible(false);
 				current = newAsgnmtPnl();
 				current.setVisible(true);
 			}
 		});
-		
+
 		backBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				current.setVisible(false);
@@ -382,18 +389,18 @@ public class TeacherPage extends JFrame {
 				current.setVisible(true);
 			}
 		});
-		
+
 		return newAsgnmtPnl;
 	}
-	
+
 //---------------------------------------------------------------------//
 //						Delete Assignment Page
 //---------------------------------------------------------------------//
-	
+
 	public JPanel delAsgnmtPnl() {
 		JPanel delAsgnmtPnl = new JPanel();
 		current.setVisible(false);
-		
+
 		JLabel delAsgnmtLbl = new JLabel("Select Assignment to Delete (cannot be undone)");
 		JTextField delAsgnmtFld = new JTextField("", 10);
 		JButton delAsgnmtBtn = new JButton("Delete Assignment");
@@ -403,36 +410,35 @@ public class TeacherPage extends JFrame {
 		delAsgnmtPnl.add(delAsgnmtFld);
 		delAsgnmtPnl.add(delAsgnmtBtn);
 		delAsgnmtPnl.add(backBtn);
-		
-		if(error_flag == 0) {
+
+		if (error_flag == 0) {
 			JLabel success = new JLabel("Assignment Deleted Successfully");
 			delAsgnmtPnl.add(success);
 			error_flag = -1;
-		}
-		else if(error_flag == 1) {
+		} else if (error_flag == 1) {
 			JLabel duplicate = new JLabel("Assignment ID Not found");
 			delAsgnmtPnl.add(duplicate);
 			error_flag = -1;
 		}
-		
+
 		else if (error_flag == 3) {
 			JLabel error = new JLabel("There was an unknown error with your request");
 			delAsgnmtPnl.add(error);
 			error_flag = -1;
 		}
-		
+
 		add(delAsgnmtPnl);
-		
+
 		delAsgnmtBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				error_flag = conn.removeRow("assignments", delAsgnmtFld.getText());
 				current.setVisible(false);
 				current = delAsgnmtPnl();
 				current.setVisible(true);
-				
+
 			}
 		});
-		
+
 		backBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				current.setVisible(false);
@@ -443,9 +449,8 @@ public class TeacherPage extends JFrame {
 				current.setVisible(true);
 			}
 		});
-		
+
 		return delAsgnmtPnl;
 	}
-	
 
 }
