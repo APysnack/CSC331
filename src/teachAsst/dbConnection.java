@@ -1,7 +1,7 @@
 package teachAsst;
 
 import java.sql.Connection;
-
+import java.util.Date;
 import java.sql.ResultSetMetaData;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -14,6 +14,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+
+// error_flag keys:
+// [0 : success, 1 : UsrDoesNotExist, 2: Duplicate User, 3 : too short]
 
 public class dbConnection {
 	String name;
@@ -91,8 +94,9 @@ public class dbConnection {
 		}
 	} // end edit user function
 
-	public int removeUser(String userName) {
-		String new_query = "Delete from users where ID='" + userName + "';";
+	public int removeRow(String table, String id) {
+		String new_query = "Delete from " + table + " where ID='" + id + "';";
+		
 		try {
 			Statement stmt = conn.createStatement();
 			int rowsAffected = stmt.executeUpdate(new_query);
@@ -112,14 +116,14 @@ public class dbConnection {
 	} // end remove user function
 
 	public JTable getJTable() {
-		
+
 		String new_query = "Select * from Users;";
-		
+
 		try {
-			
+
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-			centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-			
+			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
 			Statement stmt = conn.createStatement();
 			stmt.executeQuery(new_query);
 			ResultSet result = stmt.getResultSet();
@@ -154,11 +158,10 @@ public class dbConnection {
 					return Object.class;
 				}
 			};
-			
-			for(int i = 0; i < colCount; i++) {
-				table.getColumnModel().getColumn(i).setCellRenderer( centerRenderer );
+
+			for (int i = 0; i < colCount; i++) {
+				table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 			}
-			
 
 			return table;
 
@@ -168,6 +171,27 @@ public class dbConnection {
 
 		JTable table = new JTable();
 		return table;
+	}
+
+	public int addAssignment(int id, String title, String details, int points, String dueDate) {
+		String new_query = "insert into assignments values (" + id + ", '" + title + "', '" + details + "', " + points
+				+ ", '" + dueDate + "');";
+		
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate(new_query);
+			return 0;
+		}
+		
+		catch (SQLIntegrityConstraintViolationException e) {
+			return 2;
+		}
+
+		catch (SQLException e) {
+			System.out.println(e);
+			return 3;
+		}
+
 	}
 
 } // end class

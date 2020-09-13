@@ -155,7 +155,7 @@ public class BuildGUI extends JFrame implements ActionListener {
 				
 				else if(privilege == 2){
 					this.dispose();
-					TeacherPage tchr = new TeacherPage();
+					TeacherPage tchr = new TeacherPage(dbConn);
 				}
 				
 				else if(privilege == 3)

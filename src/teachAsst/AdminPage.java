@@ -53,13 +53,15 @@ public class AdminPage extends JFrame {
 		JButton editUsrBtn = new JButton("Edit User");
 		JButton delUsrBtn = new JButton("Delete User");
 		JButton viewUsrBtn = new JButton("View Users");
+		JButton lgOutBtn = new JButton("Log Out");
 
 		main_window.add(adminLbl);
 		main_window.add(addUsrBtn);
 		main_window.add(editUsrBtn);
 		main_window.add(delUsrBtn);
 		main_window.add(viewUsrBtn);
-
+		main_window.add(lgOutBtn);
+		
 		this.add(main_window);
 		this.setVisible(true);
 		this.current = main_window;
@@ -67,7 +69,14 @@ public class AdminPage extends JFrame {
 // ------------------------------------------------------------------------ //
 //                        Create new User Page
 // ------------------------------------------------------------------------ //
-
+		
+		lgOutBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				dispose();
+				BuildGUI home = new BuildGUI();
+			}
+		});
+		
 		addUsrBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				current.setVisible(false);
@@ -306,7 +315,7 @@ public class AdminPage extends JFrame {
 
 				delUsrBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
-						error_flag = dbConn.removeUser(usrIdTxtBox.getText());
+						error_flag = dbConn.removeRow("Users", usrIdTxtBox.getText());
 					}
 				});
 				
