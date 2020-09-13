@@ -33,7 +33,6 @@ public class dbConnection {
 
 	public int connectUser(String userName, String userPW) throws SQLException {
 		int privilege = 0;
-
 		String new_query = "Select * from users where ID = '" + userName + "' AND Password = '" + userPW + "'";
 
 		Statement stmt = conn.createStatement();

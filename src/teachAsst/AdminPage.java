@@ -81,6 +81,9 @@ public class AdminPage extends JFrame {
 
 				JButton crtUsrBtn = new JButton("Register New User");
 				crtUsrBtn.addActionListener(this);
+				
+				JButton backBtn = new JButton("Back");
+				backBtn.addActionListener(this);
 
 				JTextField usrTextFld = new JTextField("", 15);
 				JTextField pwTextFld = new JTextField("", 15);
@@ -91,6 +94,7 @@ public class AdminPage extends JFrame {
 				addUsrPnl.add(pwTextFld);
 				addUsrPnl.add(crtUsrBtn);
 				addUsrPnl.add(usrMenu);
+				addUsrPnl.add(backBtn);
 
 				add(addUsrPnl);
 				current = addUsrPnl;
@@ -121,6 +125,13 @@ public class AdminPage extends JFrame {
 					}
 				});
 
+				backBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						dispose();
+						AdminPage admn = new AdminPage(dbConn);
+					}
+				});
+				
 				crtUsrBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 						int privilege = 0;
@@ -177,6 +188,9 @@ public class AdminPage extends JFrame {
 
 				JButton editSbmtBtn = new JButton("Submit");
 				editSbmtBtn.addActionListener(this);
+				
+				JButton backBtn = new JButton("Back");
+				backBtn.addActionListener(this);
 
 				editUsrPnl.add(oldIdLbl);
 				editUsrPnl.add(oldIdTxtBox);
@@ -187,6 +201,7 @@ public class AdminPage extends JFrame {
 				editUsrPnl.add(menuLbl);
 				editUsrPnl.add(usrMenu);
 				editUsrPnl.add(editSbmtBtn);
+				editUsrPnl.add(backBtn);
 
 				if (error_flag == 0) {
 					JLabel success = new JLabel("User successfully edited");
@@ -239,7 +254,13 @@ public class AdminPage extends JFrame {
 
 				usrMenu.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
-						current.setVisible(false);
+					}
+				});
+				
+				backBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						dispose();
+						AdminPage admn = new AdminPage(dbConn);
 					}
 				});
 
@@ -260,10 +281,14 @@ public class AdminPage extends JFrame {
 				JButton delUsrBtn = new JButton("Delete User");
 				delUsrBtn.addActionListener(this);
 
+				JButton backBtn = new JButton("Back");
+				backBtn.addActionListener(this);
+
 				delUsrPnl.add(delUsrHdr);
 				delUsrPnl.add(delUsrId);
 				delUsrPnl.add(usrIdTxtBox);
 				delUsrPnl.add(delUsrBtn);
+				delUsrPnl.add(backBtn);
 
 				if (error_flag == 0) {
 					JLabel success = new JLabel("User successfully removed");
@@ -278,12 +303,20 @@ public class AdminPage extends JFrame {
 				current = delUsrPnl;
 				add(delUsrPnl);
 
+
 				delUsrBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 						error_flag = dbConn.removeUser(usrIdTxtBox.getText());
-						System.out.println(error_flag);
 					}
 				});
+				
+				backBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						dispose();
+						AdminPage admn = new AdminPage(dbConn);
+					}
+				});
+
 
 			}
 		}); // delete user page end
@@ -292,14 +325,15 @@ public class AdminPage extends JFrame {
 			public void actionPerformed(ActionEvent evt) {
 				current.setVisible(false);
 				JTable table = dbConn.getJTable();
-				
+
 				JPanel viewTblPnl = new JPanel(new GridLayout(3, 1, 2, 2));
-				
+
 				JPanel pad = new JPanel();
 				pad.setBorder(new EmptyBorder(10, 10, 10, 10));
-				
+
 				JButton backBtn = new JButton("Back");
 				backBtn.addActionListener(this);
+
 				JScrollPane scrollPane = new JScrollPane(table);
 				viewTblPnl.add(scrollPane);
 				viewTblPnl.add(pad);

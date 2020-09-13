@@ -32,11 +32,21 @@ public class ErrorPage extends JFrame implements ActionListener {
 		this.setTitle("Error");
 		JPanel main_window = new JPanel();
 		JLabel errorLbl = new JLabel("There was an error with your Login");
+		JButton backBtn = new JButton("Back");
+		backBtn.addActionListener(this);
 		
 		main_window.add(errorLbl);
+		main_window.add(backBtn);
 		
 		this.add(main_window);
 		this.setVisible(true);
+		
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				dispose();
+				BuildGUI test = new BuildGUI();
+			}
+		});
 	}
 	
 	@Override
