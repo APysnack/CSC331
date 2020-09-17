@@ -469,8 +469,8 @@ public class TeacherPage extends JFrame {
 //---------------------------------------------------------------------//
 
 	public JPanel delAsgnmtPnl() {
-		JPanel delAsgnmtPnl = new JPanel();
 		current.setVisible(false);
+		JPanel delAsgnmtPnl = new JPanel();
 
 		JLabel delAsgnmtLbl = new JLabel("Select Assignment to Delete (cannot be undone)");
 		JTextField delAsgnmtFld = new JTextField("", 10);

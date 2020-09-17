@@ -118,6 +118,7 @@ public class AdminPage extends JFrame {
 							"ERROR: \n" + "Please ensure your name and password are a minimum of 5 characters");
 					addUsrPnl.add(tooShort);
 				}
+				// poop
 
 //------------------------------------------------------------------------ //
 // 						Create User Button Response
